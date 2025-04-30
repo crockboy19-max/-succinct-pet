@@ -1,0 +1,115 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+  <title>SuccinctPet</title>
+  <style>
+    body {
+      background-color: #0f0f12;
+      font-family: monospace;
+      color: white;
+      text-align: center;
+      margin: 0;
+      padding: 0;
+    }
+    h1 { margin-top: 20px; }
+    #pet {
+      margin: 40px auto;
+      width: 100px;
+      height: 100px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #6e45e2, #88d3ce);
+      position: relative;
+      animation: float 2s infinite ease-in-out;
+    }
+    @keyframes float {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-10px); }
+    }
+    .bar {
+      width: 200px;
+      height: 20px;
+      margin: 10px auto;
+      background: #333;
+      border-radius: 10px;
+      overflow: hidden;
+    }
+    .fill {
+      height: 100%;
+      background: #4caf50;
+      width: 0%;
+    }
+    button {
+      margin: 10px;
+      padding: 10px 20px;
+      background: #444;
+      border: none;
+      color: white;
+      border-radius: 10px;
+      cursor: pointer;
+    }
+    button:hover { background: #666; }
+  </style>
+</head>
+<body>
+  <h1>SuccinctPet</h1>
+  <div id="pet"></div>
+  <div>DA</div>
+  <div class="bar"><div id="daFill" class="fill"></div></div>
+  <div>Execution</div>
+  <div class="bar"><div id="execFill" class="fill"></div></div>
+  <div>Settlement</div>
+  <div class="bar"><div id="settleFill" class="fill"></div></div>
+
+  <div>
+    <button onclick="feed('da')">Feed Blob</button>
+    <button onclick="feed('exec')">Play</button>
+    <button onclick="feed('settle')">Nap</button>
+    <button onclick="reset()">Reset</button>
+  </div>
+
+  <audio id="sound-da" src="https://actions.google.com/sounds/v1/cartoon/pop.ogg"></audio>
+  <audio id="sound-exec" src="https://actions.google.com/sounds/v1/human_voices/human_grunt.ogg"></audio>
+  <audio id="sound-settle" src="https://actions.google.com/sounds/v1/alarms/beep_short.ogg"></audio>
+  <audio id="sound-evolve" src="https://actions.google.com/sounds/v1/cartoon/clang_and_wobble.ogg"></audio>
+
+  <script>
+    let state = { da: 0, exec: 0, settle: 0 };
+
+    function updateBars() {
+      document.getElementById('daFill').style.width = state.da + '%';
+      document.getElementById('execFill').style.width = state.exec + '%';
+      document.getElementById('settleFill').style.width = state.settle + '%';
+      if (state.da >= 100 && state.exec >= 100 && state.settle >= 100) {
+        evolve();
+      }
+    }
+
+    function feed(layer) {
+      if (state[layer] < 100) {
+        state[layer] += 10;
+        playSound(layer);
+      }
+      updateBars();
+    }
+
+    function reset() {
+      state = { da: 0, exec: 0, settle: 0 };
+      document.getElementById('pet').style.background = 'linear-gradient(135deg, #6e45e2, #88d3ce)';
+      updateBars();
+    }
+
+    function evolve() {
+      document.getElementById('pet').style.background = 'radial-gradient(circle, gold, orange)';
+      document.getElementById('sound-evolve').play();
+      alert("🎉 Your SuccinctPet has evolved into zk-Drake!");
+    }
+
+    function playSound(layer) {
+      document.getElementById('sound-' + layer).play();
+    }
+
+    updateBars();
+  </script>
+</body>
+</html>
